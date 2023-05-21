@@ -25,10 +25,10 @@ typedef struct data {
 
 /**
  * @brief Главный парсер
- * 
- * @param data 
- * @param path_to_file 
- * @return int 
+ *
+ * @param data
+ * @param path_to_file
+ * @return int
  */
 int s21_parser(data_t *data, char *path_to_file);
 
@@ -41,14 +41,22 @@ int s21_parser(data_t *data, char *path_to_file);
 int s21_parse_amount(data_t *data, char *path_to_file);
 
 /**
- * @brief Вторичный парсер. Заполняет матрицу значениями вершин и добавляет + 1 к началу для
- * правильной индексации
+ * @brief Вторичный парсер. Использует чтение файла чтобы передать данные уже
+ * непосредственно в структуру
  *
  * @param data Матрица
  * @param path_to_file Путь к файлу
  */
 int s21_parse_all_data(data_t *data, char *path_to_file);
 
+/**
+ * @brief Вторичный парсер. Заполняет матрицу значениями вершин, какую именно
+ * часть матрицы заполняем определяется с помощью index
+ *
+ * @param data
+ * @param index
+ * @param line
+ */
 void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *line);
 
 /**

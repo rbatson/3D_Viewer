@@ -3,8 +3,7 @@
 int s21_parser(data_t *data, char *path_to_file) {
   int err = 0;
   err = s21_parse_amount(data, path_to_file);
-  if (!err)
-    err = s21_parse_all_data(data, path_to_file);
+  if (!err) err = s21_parse_all_data(data, path_to_file);
   return err;
 }
 
@@ -61,7 +60,7 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
   return err;
 }
 
-void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *line){
+void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *line) {
   int j = 2;
   for (int i = 0; i < 3; i++) {
     char temp_str[256];
