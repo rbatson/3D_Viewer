@@ -47,7 +47,9 @@ int s21_parse_amount(data_t *data, char *path_to_file);
  * @param data Матрица
  * @param path_to_file Путь к файлу
  */
-int s21_fill_matrix_with_vertexes(data_t *data, char *path_to_file);
+int s21_parse_all_data(data_t *data, char *path_to_file);
+
+void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *line);
 
 /**
  * @brief Создание матрицы
