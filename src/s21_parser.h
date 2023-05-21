@@ -24,7 +24,16 @@ typedef struct data {
 } data_t;
 
 /**
- * @brief Передача колличества вершин и полигонов
+ * @brief Главный парсер
+ * 
+ * @param data 
+ * @param path_to_file 
+ * @return int 
+ */
+int s21_parser(data_t *data, char *path_to_file);
+
+/**
+ * @brief Вторичный парсер. Передача колличества вершин и полигонов
  *
  * @param data Куда записываем результат
  * @param path_to_file Путь к файлу
@@ -32,7 +41,7 @@ typedef struct data {
 int s21_parse_amount(data_t *data, char *path_to_file);
 
 /**
- * @brief Заполняет матрицу значениями вершин и добавляет + 1 к началу для
+ * @brief Вторичный парсер. Заполняет матрицу значениями вершин и добавляет + 1 к началу для
  * правильной индексации
  *
  * @param data Матрица

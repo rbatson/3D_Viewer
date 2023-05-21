@@ -1,6 +1,12 @@
 #include "s21_parser.h"
 
-int s21_parser(data_t *data, char *path_to_file);
+int s21_parser(data_t *data, char *path_to_file) {
+  int err = 0;
+  err = s21_parse_amount(data, path_to_file);
+  if (!err)
+    err = s21_fill_matrix_with_vertexes(data, path_to_file);
+  return err;
+}
 
 int s21_parse_amount(data_t *data, char *path_to_file) {
   int err = 0;
@@ -137,8 +143,7 @@ int main() {
   data->count_of_vertexes = *(unsigned int *)malloc(sizeof(unsigned int));
   data->count_of_facets = *(unsigned int *)malloc(sizeof(unsigned int));
   char *path_to_file = "test.obj";
-  s21_parse_amount(data, path_to_file);
-  s21_fill_matrix_with_vertexes(data, path_to_file);
+  s21_parser(data, path_to_file);
   s21_print_matrix(&data->matrix_3d);
   printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
   printf("amount of facets = [%d]\n", data->count_of_facets);
