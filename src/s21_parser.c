@@ -2,7 +2,7 @@
 
 int s21_parser(data_t *data, char *path_to_file);
 
-int parse_amount(data_t *data, char *path_to_file){
+int s21_parse_amount(data_t *data, char *path_to_file){
     int err = 0;
     FILE *file;
     file = fopen(path_to_file, "r");
@@ -28,6 +28,7 @@ int parse_amount(data_t *data, char *path_to_file){
     }
     return err;
 }
+
 
 int s21_create_matrix(unsigned int rows, unsigned int columns, matrix_t *result) {
   int res = 0;
@@ -56,6 +57,27 @@ int s21_create_matrix(unsigned int rows, unsigned int columns, matrix_t *result)
   return res;
 }
 
+void s21_remove_matrix(matrix_t *A) {
+    if (A->matrix) {
+        for (unsigned int i = 0; i < A->rows; i++) {
+            free(A->matrix[i]);
+        }
+        free(A->matrix);
+        A->rows = 0;
+        A->cols = 0;
+        A = NULL;
+    }
+}
+
+int s21_check_matrix(matrix_t *A) {
+  int err = 0;
+    if (A == NULL || A->matrix == NULL || A->rows < 1 || A->cols < 1) {
+        err = 1;
+    }
+  return err;
+}
+
+
 void s21_print_matrix(matrix_t *matrix) {
     for (unsigned int i = 0; i < matrix->rows; i++){
         for (unsigned int j = 0; j < matrix->cols; j++) {
@@ -72,8 +94,9 @@ int main() {
     data->count_of_vertexes = *(unsigned int *)malloc(sizeof(unsigned int));
     data->count_of_facets = *(unsigned int *)malloc(sizeof(unsigned int));
     char *path_to_file = "test.obj";
-    parse_amount(data, path_to_file);
+    s21_parse_amount(data, path_to_file);
     s21_print_matrix(&matrix);
     printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
     printf("amount of facets = [%d]\n", data->count_of_facets);
+    s21_remove_matrix(&matrix);
 }

@@ -5,6 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+/**
+ * @brief 
+ * 
+ */
 typedef struct matrix {
     double **matrix;
     unsigned int rows;
@@ -23,9 +27,28 @@ typedef struct data {
     polygon_t *polygons;
 }data_t;
 
+/**
+ * @brief Передача колличества вершин и полигонов
+ * 
+ * @param data Куда записываем результат
+ * @param path_to_file Путь к файлу
+ */
+int s21_parse_amount(data_t *data, char *path_to_file);
 
-int parse_amount(data_t *data, char *path_to_file);
+/**
+ * @brief Создание матрицы
+ * 
+ * @param rows Строчки
+ * @param columns Колонки
+ * @param result Куда записываем матрицу
+ */
 int s21_create_matrix(unsigned int rows, unsigned int columns, matrix_t *result);
+
+/**
+ * @brief Простенькая функция для вывода матрицы, созданна для проверки
+ * 
+ * @param matrix Матрица которую надо вывести
+ */
 void s21_print_matrix(matrix_t *matrix);
 
 
