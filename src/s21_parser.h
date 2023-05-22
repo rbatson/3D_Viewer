@@ -57,6 +57,13 @@ int s21_parse_all_data(data_t *data, char *path_to_file);
  */
 unsigned int s21_find_amount_of_vertexes_to_connect(char *str);
 
+/**
+ * @brief Заполняем дату в структуре polygon_t
+ * 
+ * @param str строка откуда читаем
+ * @param data куда заполняем
+ * @param index обычный счетчик
+ */
 void s21_fill_polygon_data(char *str, data_t *data, int index);
 
 /**
