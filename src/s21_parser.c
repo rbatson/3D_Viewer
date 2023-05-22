@@ -148,7 +148,7 @@ int main() {
   //rotation_by_ox(data, 15);
   //rotation_by_oy(data, 15);
   //rotation_by_oz(data, 15);
-  //scaling(data, 2);
+  scaling(data, 0);
   s21_print_matrix(&data->matrix_3d);
   s21_remove_matrix(&data->matrix_3d);
   free(data);
