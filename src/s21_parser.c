@@ -97,7 +97,7 @@ void s21_fill_polygon_data(char *str, data_t *data, int index) {
     memset(temp_str, '\0', 256);
     int k = 0;
     for (; str[j] != '/' && str[j] != ' ' && str[j] != '\0'; j++, k++) {
-        temp_str[k] = temp_str[j];
+        temp_str[k] = str[j];
     }
     data->polygons[index].vertexes[i] = atoi(temp_str);
     i++;
@@ -193,7 +193,14 @@ int main() {
   //rotation_by_oz(data, 15);
   //scaling(data, 1);
   s21_print_matrix(&data->matrix_3d);
-  printf("number of vertexes after 'f'[1] in test.obj = %d\n", data->polygons[1].number_of_vertexes_in_facets);
-  printf("number of vertexes after 'f'[2] in test.obj = %d\n", data->polygons[2].number_of_vertexes_in_facets);
+  printf("\n");
+  for (unsigned int i = 1; i < data->count_of_facets + 1; i++){
+    int j = 0;
+    for (unsigned int k = 0; k < data->polygons[i].number_of_vertexes_in_facets; k++) {
+      printf("'f'[%d][%d] in test.obj = %d\n",i, j , data->polygons[i].vertexes[k]);
+      j++;
+    }
+    printf("\n");
+  }
   free(data);
 }
