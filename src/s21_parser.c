@@ -1,4 +1,5 @@
 #include "s21_parser.h"
+#include "s21_afin_transf.h"
 
 int s21_parser(data_t *data, char *path_to_file) {
   int err = 0;
@@ -142,9 +143,13 @@ int main() {
   data_t *data = malloc(sizeof(data_t));
   char *path_to_file = "test.obj";
   s21_parser(data, path_to_file);
-  s21_print_matrix(&data->matrix_3d);
   printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
   printf("amount of facets = [%d]\n", data->count_of_facets);
+  //rotation_by_ox(data, 15);
+  //rotation_by_oy(data, 15);
+  //rotation_by_oz(data, 15);
+  //scaling(data, 2);
+  s21_print_matrix(&data->matrix_3d);
   s21_remove_matrix(&data->matrix_3d);
   free(data);
 }
