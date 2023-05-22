@@ -1,4 +1,5 @@
 #include "s21_parser.h"
+
 #include "s21_afin_transf.h"
 
 int s21_parser(data_t *data, char *path_to_file) {
@@ -53,12 +54,13 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
         if (str[0] == 'v' && str[1] == ' ') {
           s21_fill_matrix_with_vertexes(data, &index, str);
         } else if (str[0] == 'f') {
-                    data->polygons[j].number_of_vertexes_in_facets =
-                            s21_find_amount_of_vertexes_to_connect(str);
-                    data->polygons[j].vertexes = calloc(data->polygons[j].
-                            number_of_vertexes_in_facets, sizeof(unsigned int));
-                    s21_fill_polygon_data(str, data, j);
-                    j++;
+          data->polygons[j].number_of_vertexes_in_facets =
+              s21_find_amount_of_vertexes_to_connect(str);
+          data->polygons[j].vertexes =
+              calloc(data->polygons[j].number_of_vertexes_in_facets,
+                     sizeof(unsigned int));
+          s21_fill_polygon_data(str, data, j);
+          j++;
         }
       }
       free(str);
@@ -73,9 +75,11 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
 unsigned int s21_find_amount_of_vertexes_to_connect(char *str) {
   int i = 0;
   unsigned int count_vertexes = 0;
-  for(;;) {
-    for (; (str[i] != ' ') && (str[i] != '\0'); i++) {}
-    if (str[i] == '\0' || (str[i] == ' ' && (str[i + 1] < 48 || str[i + 1] > 57))) {
+  for (;;) {
+    for (; (str[i] != ' ') && (str[i] != '\0'); i++) {
+    }
+    if (str[i] == '\0' ||
+        (str[i] == ' ' && (str[i + 1] < 48 || str[i + 1] > 57))) {
       break;
     }
     i++;
@@ -88,7 +92,8 @@ void s21_fill_polygon_data(char *str, data_t *data, int index) {
   int i = 0;
   int j = 0;
   while (1) {
-    for (; (str[j] != ' ') && (str[j] != '\0'); j++) {}
+    for (; (str[j] != ' ') && (str[j] != '\0'); j++) {
+    }
     if (str[j] == '\0') {
       break;
     }
@@ -97,7 +102,7 @@ void s21_fill_polygon_data(char *str, data_t *data, int index) {
     memset(temp_str, '\0', 256);
     int k = 0;
     for (; str[j] != '/' && str[j] != ' ' && str[j] != '\0'; j++, k++) {
-        temp_str[k] = str[j];
+      temp_str[k] = str[j];
     }
     data->polygons[index].vertexes[i] = atoi(temp_str);
     i++;
@@ -188,16 +193,18 @@ int main() {
   s21_parser(data, path_to_file);
   printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
   printf("amount of facets = [%d]\n", data->count_of_facets);
-  //rotation_by_ox(data, 15);
-  //rotation_by_oy(data, 15);
-  //rotation_by_oz(data, 15);
-  //scaling(data, 1);
+  // rotation_by_ox(data, 15);
+  // rotation_by_oy(data, 15);
+  // rotation_by_oz(data, 15);
+  // scaling(data, 1);
   s21_print_matrix(&data->matrix_3d);
   printf("\n");
-  for (unsigned int i = 1; i < data->count_of_facets + 1; i++){
+  for (unsigned int i = 1; i < data->count_of_facets + 1; i++) {
     int j = 0;
-    for (unsigned int k = 0; k < data->polygons[i].number_of_vertexes_in_facets; k++) {
-      printf("'f'[%d][%d] in test.obj = %d\n",i, j , data->polygons[i].vertexes[k]);
+    for (unsigned int k = 0; k < data->polygons[i].number_of_vertexes_in_facets;
+         k++) {
+      printf("'f'[%d][%d] in test.obj = %d\n", i, j,
+             data->polygons[i].vertexes[k]);
       j++;
     }
     printf("\n");

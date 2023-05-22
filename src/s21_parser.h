@@ -1,10 +1,10 @@
 #ifndef S21_PARSER_H_
 #define S21_PARSER_H_
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 typedef struct matrix {
   double **matrix;
@@ -52,14 +52,14 @@ int s21_parse_all_data(data_t *data, char *path_to_file);
 
 /**
  * @brief Находим колличество вершин для того чтобы сделать полигон
- * 
+ *
  * @param str obj файл откуда вытаскиваем данные
  */
 unsigned int s21_find_amount_of_vertexes_to_connect(char *str);
 
 /**
  * @brief Заполняем дату в структуре polygon_t
- * 
+ *
  * @param str строка откуда читаем
  * @param data куда заполняем
  * @param index обычный счетчик
