@@ -51,6 +51,15 @@ int s21_parse_amount(data_t *data, char *path_to_file);
 int s21_parse_all_data(data_t *data, char *path_to_file);
 
 /**
+ * @brief Находим колличество вершин для того чтобы сделать полигон
+ * 
+ * @param str obj файл откуда вытаскиваем данные
+ */
+unsigned int s21_find_amount_of_vertexes_to_connect(char *str);
+
+void s21_fill_polygon_data(char *str, data_t *data, int index);
+
+/**
  * @brief Вторичный парсер. Заполняет матрицу значениями вершин, какую именно
  * часть матрицы заполняем определяется с помощью index
  *

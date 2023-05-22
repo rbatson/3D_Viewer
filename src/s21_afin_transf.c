@@ -47,7 +47,7 @@ void rotation_by_oz(data_t* A, double angle) {
 
 void scaling(data_t *A, double scale) {
   if (scale != 0) {
-    for (int i = 0; i < A->matrix_3d.rows; i++) {
+    for (size_t i = 0; i < A->matrix_3d.rows; i++) {
       A->matrix_3d.matrix[i][0] *= scale;
       A->matrix_3d.matrix[i][1] *= scale;
       A->matrix_3d.matrix[i][2] *= scale;

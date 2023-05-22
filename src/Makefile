@@ -5,9 +5,9 @@ OBJ=$(SRC:.c=.o)
 TEST_FILE_NAME = tests.c
 
 all:
-	@gcc $(SRC)
-	@./a.out
-	@rm a.out
+	@$(CC) $(CFLAGS) $(SRC) -o s21_3D
+	@./s21_3D
+	@rm s21_3D
 
 clean:
 	@rm -rf *.o *.a *.so *.gcda *.gcno *.gch *.dSYM rep.info *.tar *.html *.css *.out test report *.txt test.info test.dSYM

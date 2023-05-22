@@ -14,20 +14,20 @@ int s21_parse_amount(data_t *data, char *path_to_file) {
   file = fopen(path_to_file, "r");
 
   if (file != NULL) {
-    char *line = NULL;
+    char *str = NULL;
     size_t len = 0;
     unsigned int amount_of_vertexes = 0;
     unsigned int amount_of_facets = 0;
-    while (getline(&line, &len, file) != -1) {
-      if (line[0] == 'v' && line[1] == ' ') {
+    while (getline(&str, &len, file) != -1) {
+      if (str[0] == 'v' && str[1] == ' ') {
         amount_of_vertexes++;
-      } else if (line[0] == 'f') {
+      } else if (str[0] == 'f') {
         amount_of_facets++;
       }
     }
     data->count_of_vertexes = amount_of_vertexes;
     data->count_of_facets = amount_of_facets;
-    free(line);
+    free(str);
     fclose(file);
   } else {
     err = 1;
@@ -41,18 +41,27 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
   err = s21_create_matrix(data->count_of_vertexes + 1, 3, &matrix_of_vertexes);
   if (!err) {
     data->matrix_3d = matrix_of_vertexes;
+    data->polygons = malloc((data->count_of_facets + 1) * sizeof(polygon_t));
     FILE *file;
     file = fopen(path_to_file, "r");
     if (file != NULL) {
-      char *line = NULL;
+      char *str = NULL;
       size_t len = 0;
       int index = 1;
-      while (getline(&line, &len, file) != -1) {
-        if (line[0] == 'v' && line[1] == ' ') {
-          s21_fill_matrix_with_vertexes(data, &index, line);
+      int j = 1;
+      while (getline(&str, &len, file) != -1) {
+        if (str[0] == 'v' && str[1] == ' ') {
+          s21_fill_matrix_with_vertexes(data, &index, str);
+        } else if (str[0] == 'f') {
+                    data->polygons[j].number_of_vertexes_in_facets =
+                            s21_find_amount_of_vertexes_to_connect(str);
+                    data->polygons[j].vertexes = calloc(data->polygons[j].
+                            number_of_vertexes_in_facets, sizeof(unsigned int));
+                    s21_fill_polygon_data(str, data, j);
+                    j++;
         }
       }
-      free(line);
+      free(str);
       fclose(file);
     }
   } else {
@@ -61,18 +70,52 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
   return err;
 }
 
-void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *line) {
+unsigned int s21_find_amount_of_vertexes_to_connect(char *str) {
+  int i = 0;
+  unsigned int count_vertexes = 0;
+  for(;;) {
+    for (; (str[i] != ' ') && (str[i] != '\0'); i++) {}
+    if (str[i] == '\0' || (str[i] == ' ' && (str[i + 1] < 48 || str[i + 1] > 57))) {
+      break;
+    }
+    i++;
+    count_vertexes++;
+  }
+  return count_vertexes;
+}
+
+void s21_fill_polygon_data(char *str, data_t *data, int index) {
+  int i = 0;
+  int j = 0;
+  while (1) {
+    for (; (str[j] != ' ') && (str[j] != '\0'); j++) {}
+    if (str[j] == '\0') {
+      break;
+    }
+    j++;
+    char temp_str[256];
+    memset(temp_str, '\0', 256);
+    int k = 0;
+    for (; str[j] != '/' && str[j] != ' ' && str[j] != '\0'; j++, k++) {
+        temp_str[k] = temp_str[j];
+    }
+    data->polygons[index].vertexes[i] = atoi(temp_str);
+    i++;
+  }
+}
+
+void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *str) {
   int j = 2;
   for (int i = 0; i < 3; i++) {
     char temp_str[256];
     memset(temp_str, '\0', 256);
     int k = 0;
     while (1) {
-      if (line[j] == ' ' || line[j] == '\0') {
+      if (str[j] == ' ' || str[j] == '\0') {
         data->matrix_3d.matrix[*index][i] = atof(temp_str);
         break;
       } else {
-        temp_str[k] = line[j];
+        temp_str[k] = str[j];
         k++;
         j++;
       }
@@ -148,8 +191,9 @@ int main() {
   //rotation_by_ox(data, 15);
   //rotation_by_oy(data, 15);
   //rotation_by_oz(data, 15);
-  scaling(data, 0);
+  //scaling(data, 1);
   s21_print_matrix(&data->matrix_3d);
-  s21_remove_matrix(&data->matrix_3d);
+  printf("number of vertexes after 'f'[1] in test.obj = %d\n", data->polygons[1].number_of_vertexes_in_facets);
+  printf("number of vertexes after 'f'[2] in test.obj = %d\n", data->polygons[2].number_of_vertexes_in_facets);
   free(data);
 }
