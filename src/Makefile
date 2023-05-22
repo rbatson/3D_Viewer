@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c11 -Wall -Werror -Wextra -g
+CFLAGS=-std=c11 -Wall -Werror -Wextra 
 SRC= $(wildcard *.c)
 OBJ=$(SRC:.c=.o)
 TEST_FILE_NAME = tests.c
