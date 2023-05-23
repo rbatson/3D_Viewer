@@ -2,10 +2,10 @@ all: install run
 
 install:
 	mkdir build
-	cmake CMakeLists -S ./3D -B ./build
+	cmake CMakeLists -S ./3D_Viewer_QT -B ./build
 	
 run:
-	cd build && make 3D && open 3D.app/Contents/MacOS/3D
+	cd build && make 3D_Viewer && open 3D_Viewer.app/Contents/MacOS/3D_Viewer
 
 uninstall:
 	rm -rf build
