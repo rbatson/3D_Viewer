@@ -1,14 +1,15 @@
-CC=gcc
-CFLAGS=-std=c11 -Wall -Werror -Wextra 
-SRC= $(wildcard *.c)
-OBJ=$(SRC:.c=.o)
-TEST_FILE_NAME = tests.c
+all: install run
 
-all:
-	@$(CC) $(CFLAGS) $(SRC) -o s21_3D
-	@./s21_3D
-	@rm s21_3D
+install:
+	mkdir build
+	cmake CMakeLists -S ./3D -B ./build
+	
+run:
+	cd build && make 3D && open 3D.app/Contents/MacOS/3D
+
+uninstall:
+	rm -rf build
 
 clean:
-	@rm -rf *.o *.a *.so *.gcda *.gcno *.gch *.dSYM rep.info *.tar *.html *.css *.out test report *.txt test.info test.dSYM
-
+	cd build && make clean && cd ..
+	cd tests && make clean && cd ..
