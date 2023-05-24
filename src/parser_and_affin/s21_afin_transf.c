@@ -56,20 +56,9 @@ void s21_scaling(data_t* A, double scale) {
 }
 
 void s21_center(data_t *A) {
-  int sum_x = 0;
-  int sum_y = 0;
-  int sum_z = 0;
   for (size_t i = 1; i < A->matrix_3d.rows; i++) {
-    sum_x += A->matrix_3d.matrix[i][0];
-    sum_y += A->matrix_3d.matrix[i][1];
-    sum_z += A->matrix_3d.matrix[i][2];
-  }
-  int average_x = sum_x / (A->matrix_3d.rows - 1);
-  int average_y = sum_y / (A->matrix_3d.rows - 1);
-  int average_z = sum_z / (A->matrix_3d.rows - 1);
-  for (size_t i = 1; i < A->matrix_3d.rows; i++) {
-    A->matrix_3d.matrix[i][0] -= average_x;
-    A->matrix_3d.matrix[i][1] -= average_y;
-    A->matrix_3d.matrix[i][2] -= average_z;
+    A->matrix_3d.matrix[i][0] -= A->min_max_x[0] + (A->min_max_x[1] - A->min_max_x[0]) / 2;
+    A->matrix_3d.matrix[i][1] -= A->min_max_y[0] + (A->min_max_y[1] - A->min_max_y[0]) / 2;
+    A->matrix_3d.matrix[i][2] -= A->min_max_z[0] + (A->min_max_z[1] - A->min_max_z[0]) / 2;
   }
 }

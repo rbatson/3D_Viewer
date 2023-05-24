@@ -64,6 +64,7 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
           j++;
         }
       }
+      s21_find_minmax(data);
       free(str);
       fclose(file);
     }
@@ -188,6 +189,28 @@ void s21_print_matrix(matrix_t *matrix) {
   }
 }
 
+void s21_find_minmax(data_t *A){
+  A->min_max_x = malloc(2 * sizeof(int));
+  A->min_max_y = malloc(2 * sizeof(int));
+  A->min_max_z = malloc(2 * sizeof(int));
+  A->min_max_x[0] = A->matrix_3d.matrix[1][0];
+  A->min_max_y[0] = A->matrix_3d.matrix[1][1];
+  A->min_max_z[0] = A->matrix_3d.matrix[1][2];
+  for (size_t i = 1; i < A->matrix_3d.rows; i++) { 
+    if (A->min_max_x[0] > A->matrix_3d.matrix[i][0])
+      A->min_max_x[0] = A->matrix_3d.matrix[i][0];
+    if (A->min_max_x[1] < A->matrix_3d.matrix[i][0])
+      A->min_max_x[1] = A->matrix_3d.matrix[i][0];
+    if (A->min_max_y[0] > A->matrix_3d.matrix[i][1]) 
+      A->min_max_y[0] = A->matrix_3d.matrix[i][1];
+    if (A->min_max_y[1] < A->matrix_3d.matrix[i][1]) 
+      A->min_max_y[1] = A->matrix_3d.matrix[i][1];
+    if (A->min_max_z[0] > A->matrix_3d.matrix[i][2]) 
+      A->min_max_z[0] = A->matrix_3d.matrix[i][2];
+    if (A->min_max_z[1] < A->matrix_3d.matrix[i][2]) 
+      A->min_max_z[1] = A->matrix_3d.matrix[i][2];
+  }
+}
 
 int main() {
  data_t *data = malloc(sizeof(data_t));
@@ -200,11 +223,21 @@ int main() {
  // rotation_by_oy(data, 15);
  // rotation_by_oz(data, 15);
  // scaling(data, 1);
- printf("Before centering\n");
+ printf("min and max X = ");
+ printf("[%d]", data->min_max_x[0]);
+ printf("[%d]\n", data->min_max_x[1]);
+ printf("min and max Y = ");
+ printf("[%d]", data->min_max_y[0]);
+ printf("[%d]\n", data->min_max_y[1]);
+ printf("min and max Z = ");
+ printf("[%d]", data->min_max_z[0]);
+ printf("[%d]\n", data->min_max_z[1]);
+ printf("\n");
+ printf("Матрица до центрирования:\n");
  s21_print_matrix(&data->matrix_3d);
  printf("\n");
  s21_center(data);
- printf("After centering\n");
+ printf("Матрица после центрирования:\n");
  s21_print_matrix(&data->matrix_3d);
  printf("\n");
  for (unsigned int i = 1; i < data->count_of_facets + 1; i++) {
