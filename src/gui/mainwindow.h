@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
 #include "glwidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -20,6 +21,10 @@ public:
 private:
     Ui::MainWindow *ui;
     GLWidget *glWidget;
-    QTimer *tmr;
+
+signals:
+    void readObjFile();
+private slots:
+    void on_pushButton_openFile_clicked();
 };
 #endif // MAINWINDOW_H

@@ -21,6 +21,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS OpenGL)
 
 
 set(PROJECT_SOURCES
+        ../main/s21_parser.c
+        ../main/s21_parser.h
         main.cpp
         mainwindow.cpp
         mainwindow.h

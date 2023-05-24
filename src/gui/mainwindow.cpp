@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("3D Viewer");
     glWidget = new GLWidget();
-    tmr = new QTimer();
     ui->horizontalLayout->insertWidget(0, glWidget);
+    connect(this, &MainWindow::readObjFile, glWidget, &GLWidget::readObjFile);
 }
 
 MainWindow::~MainWindow()
@@ -18,3 +18,8 @@ MainWindow::~MainWindow()
     delete ui;
     delete glWidget;
 }
+
+void MainWindow::on_pushButton_openFile_clicked() {
+  emit readObjFile();
+}
+

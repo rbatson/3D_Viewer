@@ -2,6 +2,15 @@
 #define GLWIDGET_H
 
 #define GL_SILENCE_DEPRECATION
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "../main/s21_parser.h"
+#ifdef __cplusplus
+}
+#endif
+
 #include <QOpenGLWidget>
 #include <QtOpenGL>
 #include <QTimer>
@@ -25,8 +34,8 @@ class GLWidget : public QOpenGLWidget
 public:
     GLWidget(QWidget *parent = nullptr);
     ~GLWidget();
-    float *arr;
-
+public slots:
+    void readObjFile();
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -38,9 +47,18 @@ protected:
 //    void wheelEvent(QWheelEvent *event) override;
 
 private:
+
+    data_t *objDraw = nullptr;
+    unsigned int* polygonIndices = nullptr;
+    unsigned int totalIndices;
+
     float xRot, yRot, mLastRotY, mLastRotX;
     QPointF mPos;
+
+    void drawObj();
+    void reshapePolygonIndices();
     void drawCube(float a);
+
 };
 
 #endif // GLWIDGET_H
