@@ -43,7 +43,7 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
   err = s21_create_matrix(data->count_of_vertexes + 1, 3, &matrix_of_vertexes);
   if (!err) {
     data->matrix_3d = matrix_of_vertexes;
-    data->polygons = malloc((data->count_of_facets + 1) * sizeof(polygon_t));
+    data->polygons = calloc((data->count_of_facets + 1), sizeof(polygon_t));
     FILE *file;
     file = fopen(path_to_file, "r");
     if (file != NULL) {
@@ -190,9 +190,9 @@ void s21_print_matrix(matrix_t *matrix) {
 }
 
 void s21_find_minmax(data_t *A){
-  A->min_max_x = malloc(2 * sizeof(int));
-  A->min_max_y = malloc(2 * sizeof(int));
-  A->min_max_z = malloc(2 * sizeof(int));
+  A->min_max_x = calloc(2, sizeof(int));
+  A->min_max_y = calloc(2, sizeof(int));
+  A->min_max_z = calloc(2, sizeof(int));
   A->min_max_x[0] = A->matrix_3d.matrix[1][0];
   A->min_max_y[0] = A->matrix_3d.matrix[1][1];
   A->min_max_z[0] = A->matrix_3d.matrix[1][2];
@@ -212,23 +212,23 @@ void s21_find_minmax(data_t *A){
   }
 }
 
-void s21_free_data_structure(data_t *data) {
-  for (unsigned int i = 0; i < data->matrix_3d.rows; i++) {
-    free(data->matrix_3d.matrix[i]);
-  }
-  for (unsigned int i = 0; i < data->count_of_facets; i++) {
-    free(data->polygons[i].vertexes);
-  }
-  free(data->matrix_3d.matrix);
-  free(data->min_max_x);
-  free(data->min_max_y);
-  free(data->min_max_z);
-  free(data->polygons);
-  free(data);
-}
+// void s21_free_data_structure(data_t *data) {
+//   for (unsigned int i = 0; i < data->matrix_3d.rows; i++) {
+//     free(data->matrix_3d.matrix[i]);
+//   }
+//   for (unsigned int i = 0; i < data->count_of_facets + 1; i++) {
+//     free(data->polygons[i].vertexes);
+//   }
+//   free(data->matrix_3d.matrix);
+//   free(data->min_max_x);
+//   free(data->min_max_y);
+//   free(data->min_max_z);
+//   free(data->polygons);
+//   free(data);
+// }
 
 // int main() {
-//  data_t *data = malloc(sizeof(data_t));
+//  data_t *data = calloc(1, sizeof(data_t));
 //  char *path_to_file = "../test_obj/test.obj";
 //  s21_parser(data, path_to_file);
 //  printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
