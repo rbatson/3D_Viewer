@@ -20,6 +20,9 @@ typedef struct facets {
 typedef struct data {
   unsigned int count_of_vertexes;  //Кол-во вершин
   unsigned int count_of_facets;    //Кол-во полигонов
+  int *min_max_x;
+  int *min_max_y;
+  int *min_max_z;
   matrix_t matrix_3d;
   polygon_t *polygons;
 } data_t;

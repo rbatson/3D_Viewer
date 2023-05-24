@@ -1,6 +1,7 @@
 #include "s21_parser.h"
-
 #include "s21_afin_transf.h"
+
+#include "s21_afin_transf.c"
 
 int s21_parser(data_t *data, char *path_to_file) {
   int err = 0;
@@ -187,27 +188,34 @@ void s21_print_matrix(matrix_t *matrix) {
   }
 }
 
-//int main() {
-//  data_t *data = malloc(sizeof(data_t));
-//  char *path_to_file = "test.obj";
-//  s21_parser(data, path_to_file);
-//  printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
-//  printf("amount of facets = [%d]\n", data->count_of_facets);
-//  // rotation_by_ox(data, 15);
-//  // rotation_by_oy(data, 15);
-//  // rotation_by_oz(data, 15);
-//  // scaling(data, 1);
-//  s21_print_matrix(&data->matrix_3d);
-//  printf("\n");
-//  for (unsigned int i = 1; i < data->count_of_facets + 1; i++) {
-//    int j = 0;
-//    for (unsigned int k = 0; k < data->polygons[i].number_of_vertexes_in_facets;
-//         k++) {
-//      printf("'f'[%d][%d] in test.obj = %d\n", i, j,
-//             data->polygons[i].vertexes[k]);
-//      j++;
-//    }
-//    printf("\n");
-//  }
-//  free(data);
-//}
+
+int main() {
+ data_t *data = malloc(sizeof(data_t));
+ char *path_to_file = "../test_obj/test.obj";
+ s21_parser(data, path_to_file);
+ printf("amount of vertexes = [%d]\n", data->count_of_vertexes);
+ printf("amount of facets = [%d]\n", data->count_of_facets);
+ printf("\n");
+ // rotation_by_ox(data, 15);
+ // rotation_by_oy(data, 15);
+ // rotation_by_oz(data, 15);
+ // scaling(data, 1);
+ printf("Before centering\n");
+ s21_print_matrix(&data->matrix_3d);
+ printf("\n");
+ s21_center(data);
+ printf("After centering\n");
+ s21_print_matrix(&data->matrix_3d);
+ printf("\n");
+ for (unsigned int i = 1; i < data->count_of_facets + 1; i++) {
+   int j = 0;
+   for (unsigned int k = 0; k < data->polygons[i].number_of_vertexes_in_facets;
+        k++) {
+     printf("'f'[%d][%d] in test.obj = %d\n", i, j,
+            data->polygons[i].vertexes[k]);
+     j++;
+   }
+   printf("\n");
+ }
+ free(data);
+}
