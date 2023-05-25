@@ -224,7 +224,18 @@ void s21_free_data_structure(data_t *data) {
   free(data->min_max_y);
   free(data->min_max_z);
   free(data->polygons);
+  free(data->matrix_conversion_array);
   free(data);
+}
+
+double *s21_matrix_into_array(data_t *A) {
+  A->matrix_conversion_array = calloc((A->matrix_3d.rows - 1) * A->matrix_3d.cols, sizeof(double));
+  for (int i = 0; i < ((A->matrix_3d.rows - 1) * A->matrix_3d.cols); i++) {
+    int k = (i + 3) / 3;
+    int j = i % 3;
+    A->matrix_conversion_array[i] = A->matrix_3d.matrix[k][j];
+  }
+  return A->matrix_conversion_array;
 }
 
 // int main() {
@@ -251,9 +262,14 @@ void s21_free_data_structure(data_t *data) {
 //  printf("Матрица до центрирования:\n");
 //  s21_print_matrix(&data->matrix_3d);
 //  printf("\n");
-//  s21_center(data);
-//  printf("Матрица после центрирования:\n");
-//  s21_print_matrix(&data->matrix_3d);
+// //  s21_center(data);
+// //  printf("Матрица после центрирования:\n");
+// //  s21_print_matrix(&data->matrix_3d);
+// //  printf("\n");
+//  double *test = s21_matrix_into_array(data);
+//  for (int i = 0; i < ((data->matrix_3d.rows - 1) * data->matrix_3d.cols); i++) {
+//   printf("[%f]", test[i]);
+//  }
 //  printf("\n");
 //  for (unsigned int i = 1; i < data->count_of_facets + 1; i++) {
 //    int j = 0;

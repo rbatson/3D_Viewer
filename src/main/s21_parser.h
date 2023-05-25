@@ -23,6 +23,7 @@ typedef struct data {
   int *min_max_x;
   int *min_max_y;
   int *min_max_z;
+  double *matrix_conversion_array;
   matrix_t matrix_3d;
   polygon_t *polygons;
 } data_t;
@@ -117,5 +118,12 @@ void s21_remove_matrix(matrix_t *A);
  */
 void s21_find_minmax(data_t *A);
 
+/**
+ * @brief Парсим данные из матрицы в массив
+ * 
+ * @param A Матрица
+ * @return double* 
+ */
+double *s21_matrix_into_array(data_t *A);
 
 #endif  // S21_PARSER_H_
