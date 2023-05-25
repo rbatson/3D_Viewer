@@ -68,7 +68,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 void GLWidget::readObjFile()
 {
     objDraw = (data_t *)calloc(1, sizeof(data_t));
-    char path_to_file[] = "/Users/karynkas/Desktop/Projects/C8_3DViewer_v1.0-1/data-samples/cube.obj";
+    char path_to_file[] = "/Users/Blangish/Desktop/rbatson3D/src/test_obj/cube.obj";
     s21_parser(objDraw, path_to_file);
 }
 
@@ -86,11 +86,9 @@ void GLWidget::drawObj(){
         test[i] = objDraw->matrix_3d.matrix[k][j];
     }
 
-    matrix_t matrix = objDraw->matrix_3d;
-    double *test = &matrix.matrix[1][0];
 
     reshapePolygonIndices();
-    glVertexPointer(3, GL_DOUBLE, 0, &test);//doesn't work, but if replace with ver_cub works fine
+    glVertexPointer(3, GL_DOUBLE, 0, test);//doesn't work, but if replace with ver_cub works fine
 
     glEnableClientState(GL_VERTEX_ARRAY);
 

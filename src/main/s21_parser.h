@@ -111,10 +111,11 @@ int s21_check_matrix(matrix_t *A);
 void s21_remove_matrix(matrix_t *A);
 
 /**
- * @brief Находит минимальные и максимальные значения x y z, для отцентровки.
+ * @brief Нахождение максимального и минимального числа для центровки
  * 
  * @param A 
  */
 void s21_find_minmax(data_t *A);
+
 
 #endif  // S21_PARSER_H_

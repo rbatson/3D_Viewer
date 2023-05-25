@@ -1,6 +1,5 @@
 #include "s21_parser.h"
 #include "s21_afin_transf.h"
-
 #include "s21_afin_transf.c"
 
 int s21_parser(data_t *data, char *path_to_file) {
@@ -43,7 +42,7 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
   err = s21_create_matrix(data->count_of_vertexes + 1, 3, &matrix_of_vertexes);
   if (!err) {
     data->matrix_3d = matrix_of_vertexes;
-    data->polygons = calloc((data->count_of_facets + 1), sizeof(polygon_t));
+    data->polygons = malloc((data->count_of_facets + 1) * sizeof(polygon_t));
     FILE *file;
     file = fopen(path_to_file, "r");
     if (file != NULL) {
@@ -51,15 +50,19 @@ int s21_parse_all_data(data_t *data, char *path_to_file) {
       size_t len = 0;
       int index = 1;
       int j = 1;
+      data->polygons[0].vertexes = NULL;
       while (getline(&str, &len, file) != -1) {
         if (str[0] == 'v' && str[1] == ' ') {
           s21_fill_matrix_with_vertexes(data, &index, str);
         } else if (str[0] == 'f') {
           data->polygons[j].number_of_vertexes_in_facets =
               s21_find_amount_of_vertexes_to_connect(str);
-          data->polygons[j].vertexes =
-              calloc(data->polygons[j].number_of_vertexes_in_facets,
-                     sizeof(unsigned int));
+          if (data->polygons[j].number_of_vertexes_in_facets != 0) {
+              data->polygons[j].vertexes = calloc(data->polygons[j].number_of_vertexes_in_facets,
+                             sizeof(unsigned int));
+          } else {
+              data->polygons[j].vertexes = NULL;
+          }
           s21_fill_polygon_data(str, data, j);
           j++;
         }
@@ -93,6 +96,9 @@ unsigned int s21_find_amount_of_vertexes_to_connect(char *str) {
 void s21_fill_polygon_data(char *str, data_t *data, int index) {
   int i = 0;
   int j = 0;
+  if (data->polygons[index].vertexes == NULL) {
+    return;
+  }
   while (1) {
     for (; (str[j] != ' ') && (str[j] != '\0'); j++) {
     }
@@ -113,13 +119,17 @@ void s21_fill_polygon_data(char *str, data_t *data, int index) {
 
 void s21_fill_matrix_with_vertexes(data_t *data, int *index, char *str) {
   int j = 2;
+  if (data == NULL) {
+      return;
+    }
   for (int i = 0; i < 3; i++) {
     char temp_str[256];
     memset(temp_str, '\0', 256);
     int k = 0;
     while (1) {
       if (str[j] == ' ' || str[j] == '\0') {
-        data->matrix_3d.matrix[*index][i] = atof(temp_str);
+          double temp = atof(temp_str);
+        data->matrix_3d.matrix[*index][i] = temp;
         break;
       } else {
         temp_str[k] = str[j];
@@ -160,17 +170,6 @@ int s21_create_matrix(unsigned int rows, unsigned int columns,
   return res;
 }
 
-void s21_remove_matrix(matrix_t *A) {
-  if (A->matrix) {
-    for (unsigned int i = 0; i < A->rows; i++) {
-      free(A->matrix[i]);
-    }
-    free(A->matrix);
-    A->rows = 0;
-    A->cols = 0;
-    A = NULL;
-  }
-}
 
 int s21_check_matrix(matrix_t *A) {
   int err = 0;
@@ -188,6 +187,7 @@ void s21_print_matrix(matrix_t *matrix) {
     printf("\n");
   }
 }
+
 
 void s21_find_minmax(data_t *A){
   A->min_max_x = calloc(2, sizeof(int));
@@ -212,20 +212,20 @@ void s21_find_minmax(data_t *A){
   }
 }
 
-// void s21_free_data_structure(data_t *data) {
-//   for (unsigned int i = 0; i < data->matrix_3d.rows; i++) {
-//     free(data->matrix_3d.matrix[i]);
-//   }
-//   for (unsigned int i = 0; i < data->count_of_facets + 1; i++) {
-//     free(data->polygons[i].vertexes);
-//   }
-//   free(data->matrix_3d.matrix);
-//   free(data->min_max_x);
-//   free(data->min_max_y);
-//   free(data->min_max_z);
-//   free(data->polygons);
-//   free(data);
-// }
+void s21_free_data_structure(data_t *data) {
+  for (unsigned int i = 0; i < data->matrix_3d.rows; i++) {
+    free(data->matrix_3d.matrix[i]);
+  }
+  for (unsigned int i = 0; i < data->count_of_facets + 1; i++) {
+    free(data->polygons[i].vertexes);
+  }
+  free(data->matrix_3d.matrix);
+  free(data->min_max_x);
+  free(data->min_max_y);
+  free(data->min_max_z);
+  free(data->polygons);
+  free(data);
+}
 
 // int main() {
 //  data_t *data = calloc(1, sizeof(data_t));
