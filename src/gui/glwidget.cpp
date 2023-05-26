@@ -19,7 +19,7 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-1, 1, -1, 1, 1, 3);
+    glFrustum(-1, 1, -1, 1, 1, 100);
 
 }
 
@@ -67,9 +67,15 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::readObjFile()
 {
-    objDraw = (data_t *)calloc(1, sizeof(data_t));
-    char path_to_file[] = "/Users/Blangish/Desktop/rbatson3D/src/test_obj/cube.obj";
-    s21_parser(objDraw, path_to_file);
+    QString FilePath = QFileDialog::getOpenFileName(nullptr, "Выберите файл", "", "Все файлы (*.*)");
+    if (!FilePath.isEmpty()) {
+        QByteArray path = FilePath.toUtf8();
+        char *path_to_file = path.data();
+        objDraw = (data_t *)calloc(1, sizeof(data_t));
+        s21_parser(objDraw, path_to_file);
+    } else {
+        QMessageBox::information(nullptr, "Не выбран файл", "Файл не был выбран.");
+    }
 }
 
 void GLWidget::drawObj(){
@@ -78,13 +84,7 @@ void GLWidget::drawObj(){
 //         a,-a,-a,        a,-a, a,       -a,-a, a,       -a, -a, -a,
 //         a, a,-a,        a, a, a,       -a, a, a,        -a, a,-a
 //    };
-
-    double *test = (double *)calloc(25, sizeof(double));
-    for (int i = 0; i < 24; i++) {
-        int k = (i + 3) / 3;
-        int j = i % 3;
-        test[i] = objDraw->matrix_3d.matrix[k][j];
-    }
+    double *test = s21_matrix_into_array(objDraw);
 
 
     reshapePolygonIndices();

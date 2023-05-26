@@ -45,7 +45,7 @@ void rotation_by_oz(data_t* A, double angle) {
   }
 }
 
-void s21_scaling(data_t* A, double scale) {
+void s21_scale(data_t* A, double scale) {
   if (scale != 0) {
     for (size_t i = 1; i < A->matrix_3d.rows; i++) {
       A->matrix_3d.matrix[i][0] *= scale;
@@ -60,5 +60,22 @@ void s21_center(data_t *A) {
     A->matrix_3d.matrix[i][0] -= A->min_max_x[0] + (A->min_max_x[1] - A->min_max_x[0]) / 2;
     A->matrix_3d.matrix[i][1] -= A->min_max_y[0] + (A->min_max_y[1] - A->min_max_y[0]) / 2;
     A->matrix_3d.matrix[i][2] -= A->min_max_z[0] + (A->min_max_z[1] - A->min_max_z[0]) / 2;
+  }
+}
+
+void s21_scale_to_fit(data_t *A) {
+  double value = 0.3;
+  double max = A->min_max_x[1];
+  if (max < A->min_max_y[1]) {
+    max = A->min_max_y[1];
+  }
+  if (max < A->min_max_z[1]) {
+    max = A->min_max_z[1];
+  }
+  double scale = (value - (-value)) / max;
+  for (size_t i = 1; i < A->matrix_3d.rows; i++) {
+    A->matrix_3d.matrix[i][0] *= scale;
+    A->matrix_3d.matrix[i][1] *= scale;
+    A->matrix_3d.matrix[i][2] *= scale;
   }
 }

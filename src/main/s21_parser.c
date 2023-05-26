@@ -1,6 +1,5 @@
 #include "s21_parser.h"
 #include "s21_afin_transf.h"
-#include "s21_afin_transf.c"
 
 int s21_parser(data_t *data, char *path_to_file) {
   int err = 0;
@@ -188,11 +187,10 @@ void s21_print_matrix(matrix_t *matrix) {
   }
 }
 
-
 void s21_find_minmax(data_t *A){
-  A->min_max_x = calloc(2, sizeof(int));
-  A->min_max_y = calloc(2, sizeof(int));
-  A->min_max_z = calloc(2, sizeof(int));
+  A->min_max_x = calloc(2, sizeof(double));
+  A->min_max_y = calloc(2, sizeof(double));
+  A->min_max_z = calloc(2, sizeof(double));
   A->min_max_x[0] = A->matrix_3d.matrix[1][0];
   A->min_max_y[0] = A->matrix_3d.matrix[1][1];
   A->min_max_z[0] = A->matrix_3d.matrix[1][2];
@@ -262,6 +260,7 @@ double *s21_matrix_into_array(data_t *A) {
 //  printf("Матрица до центрирования:\n");
 //  s21_print_matrix(&data->matrix_3d);
 //  printf("\n");
+//  s21_scale_to_fit(data);
 // //  s21_center(data);
 // //  printf("Матрица после центрирования:\n");
 // //  s21_print_matrix(&data->matrix_3d);

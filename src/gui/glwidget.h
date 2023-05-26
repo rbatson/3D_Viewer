@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 #include "../main/s21_parser.h"
+#include "../main/s21_afin_transf.h"
 #ifdef __cplusplus
 }
 #endif
@@ -20,6 +21,8 @@ extern "C" {
 #include <QOpenGLVertexArrayObject>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QFileDialog>
+#include <QMessageBox>
 #if defined(linux) || defined(_WIN32)
 #include <GL/glut.h>
 #else

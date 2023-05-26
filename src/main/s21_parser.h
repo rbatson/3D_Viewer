@@ -20,9 +20,9 @@ typedef struct facets {
 typedef struct data {
   unsigned int count_of_vertexes;  //Кол-во вершин
   unsigned int count_of_facets;    //Кол-во полигонов
-  int *min_max_x;
-  int *min_max_y;
-  int *min_max_z;
+  double *min_max_x;
+  double *min_max_y;
+  double *min_max_z;
   double *matrix_conversion_array;
   matrix_t matrix_3d;
   polygon_t *polygons;
@@ -111,11 +111,7 @@ int s21_check_matrix(matrix_t *A);
  */
 void s21_remove_matrix(matrix_t *A);
 
-/**
- * @brief Нахождение максимального и минимального числа для центровки
- * 
- * @param A 
- */
+
 void s21_find_minmax(data_t *A);
 
 /**
